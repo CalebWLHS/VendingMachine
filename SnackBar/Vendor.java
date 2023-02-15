@@ -15,6 +15,7 @@ public class Vendor
     private int deposit;
     private int change;
     //make a private static double variable called totalSales that has an initial value of 0 and stores the amount of money made
+    private static double totalSales = 0;
 
 
     /**
@@ -25,11 +26,13 @@ public class Vendor
     public Vendor(int price, int stock)
     {
         //You need to complete this using this. notation
+        this.price = price;
+        this.stock = stock;
     }
 
     /**
      * Sets the quantity of items in stock.
-     * @param qstock number of items to place in stock (int)
+     * @param stock number of items to place in stock (int)
      */
     public void setStock(int stock)
     {
@@ -55,6 +58,7 @@ public class Vendor
     public void addMoney(int d)
     {
         //You need to complete this using mutator
+        deposit += d;
     }
 
     /**
@@ -78,6 +82,18 @@ public class Vendor
     public boolean makeSale()
     {
         //create the makesale method
+        if(stock > 0 && deposit >= price){
+            stock--;
+            change += deposit - price;
+            totalSales += price;
+            deposit = 0;
+            return true;
+        }
+        else{
+            change += deposit;
+            deposit = 0;
+            return false;
+        }
     }
 
     /**
@@ -92,15 +108,18 @@ public class Vendor
         return c;
     }
 
+    /**
+     * method that returns the amount and type of coins that should be returned by the machine
+     * @return returns a string that prints what the coin is and how much;
+     */
     public String getChangeString()
     {
         //From Ethan: create a get method that returns the amount and type of coins that should be returned by the machine
         /*
         note that the coin class has a .getQuarters(), a .getDimes() etc etc (use the coin class!)
         */
-        
-
-        String changeString="";
+        Coins coins = new Coins(change);
+        String changeString="Quarters: " +coins.getQuarters()+" Dimes: "+coins.getDimes()+" Nickles: "+coins.getNickles()+" Pennies: "+coins.getPennies();
 
         return changeString;
     }
@@ -113,6 +132,10 @@ public class Vendor
     */
     public static double getTotalSales()
     {
+        double sales = totalSales/100;
+        totalSales = 0;
+        return sales;
+
         //complete this
     }
 }
